@@ -8,5 +8,5 @@ export const PrivateRoutes = () => {
 
 export const PublicRoutes = () => {
   const islogged = getCookie("token");
-  return !islogged ? <Outlet /> : <Navigate to="/login-success" />; //TODO edit to /users
+  return !islogged ? <Outlet /> : <Navigate to="/users" />; 
 };

@@ -1,7 +1,7 @@
 import './styles/App.scss';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import {
-  Welcome, Login, LoginSuccess, Register, RegisterSuccess
+  Welcome, Login, LoginSuccess, Register, RegisterSuccess, Users
 } from "./pages";
 import Navbar from './components/navbar/Navbar';
 import {PrivateRoutes, PublicRoutes} from './utils/RouteGuard'
@@ -19,6 +19,7 @@ function App() {
       </Route>
       <Route element={<><PrivateRoutes/><Navbar/></>}>
         <Route path="login-success" element={<LoginSuccess/>} />
+        <Route path="users" element={<Users />} />
       </Route>
     </Routes>
   </BrowserRouter>
