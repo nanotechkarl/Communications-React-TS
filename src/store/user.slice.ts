@@ -14,15 +14,16 @@ let headers = {
 /* #region  - Initial state */
 const initialState: UserState = {
   loading: false,
-  accounts: {},
+  accounts: [],
   current: {},
   edit: {},
   error: "",
 };
 /* #endregion */
 
+//TODO return type object
 /* #region - Login */
-const loginUser = createAsyncThunk(
+export const loginUser = createAsyncThunk(
   "user/login",
   async (
     { email, password }: { email: string; password: string },
@@ -37,12 +38,8 @@ const loginUser = createAsyncThunk(
 
       const data = response.data;
 
-      if (data.success === false) {
-        return false;
-      }
-
-      document.cookie = `token=${data.result}; max-age=${60 * 60 * 24 * 14}`; //2 weeks
-      return true;
+      document.cookie = `token=${data.token}; max-age=${60 * 60 * 24 * 14}`; //2 weeks
+      return { email };
     } catch (error: any) {
       return thunkApi.rejectWithValue(error.message);
     }
@@ -50,6 +47,7 @@ const loginUser = createAsyncThunk(
 );
 /* #endregion */
 
+//TODO PayloadAction type
 /* #region - User slice */
 const userSlice = createSlice({
   name: "user",
@@ -59,11 +57,14 @@ const userSlice = createSlice({
     builder.addCase(loginUser.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(loginUser.fulfilled, (state, action: PayloadAction<{}>) => {
-      state.loading = false;
-      state.accounts = action.payload;
-      state.error = "";
-    });
+    builder.addCase(
+      loginUser.fulfilled,
+      (state, action: PayloadAction<any>) => {
+        state.loading = false;
+        state.current = action.payload;
+        state.error = "";
+      }
+    );
     builder.addCase(loginUser.rejected, (state, action) => {
       state.loading = false;
       state.accounts = [];

@@ -1,8 +1,6 @@
 export interface UserState {
   loading: boolean;
-  accounts: {
-    [key: string]: any;
-  };
+  accounts: [];
   current: {
     [key: string]: any;
   };

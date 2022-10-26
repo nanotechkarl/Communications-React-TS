@@ -1,7 +1,7 @@
 import './styles/App.scss';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import {
-  Welcome,
+  Welcome, Login
 } from "./pages/index";
 
 function App() {
@@ -10,6 +10,7 @@ function App() {
     <Routes>
       <Route>
         <Route index element={<Welcome logout={false} />} />
+        <Route path="login" element={<Login />} />
         <Route path="logout" element={<Welcome logout={true}/>} />
       </Route>
     </Routes>
