@@ -47,13 +47,44 @@ export const loginUser = createAsyncThunk(
 );
 /* #endregion */
 
+/* #region - Register */
+export const registerUser = createAsyncThunk(
+  "user/register",
+  async (
+    {
+      name,
+      email,
+      password,
+    }: { name: string; email: string; password: string },
+    thunkApi
+  ) => {
+    try {
+      const response = await axios.post(
+        `${server.communicationsAPI}/users/register`,
+        { fullName: name, email, password },
+        { headers }
+      );
+
+      if (response.data.message === "User already exists") {
+        alert("User already exists");
+        return;
+      }
+
+      return response;
+    } catch (error: any) {
+      return thunkApi.rejectWithValue(error.message);
+    }
+  }
+);
+/* #endregion */
+
 //TODO PayloadAction type
-/* #region - User slice */
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
+    /* #region - Login */
     builder.addCase(loginUser.pending, (state) => {
       state.loading = true;
     });
@@ -67,11 +98,25 @@ const userSlice = createSlice({
     );
     builder.addCase(loginUser.rejected, (state, action) => {
       state.loading = false;
-      state.accounts = [];
+      state.current = {};
       state.error = action.error.message;
     });
+    /* #endregion */
+
+    /* #region - Register */
+    builder.addCase(registerUser.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(registerUser.fulfilled, (state) => {
+      state.loading = false;
+      state.error = "";
+    });
+    builder.addCase(registerUser.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    });
+    /* #endregion */
   },
 });
-/* #endregion */
 
 export default userSlice.reducer;
