@@ -20,7 +20,7 @@ export default function Login() {
       const login = await dispatch(loginUser({ email, password }));
       if (login) {
         // window.location.href = `${server.app}${pages.loginSuccess}`; //TODO remove
-        navigate(`/${pages.loginSuccess}`);
+        navigate(pages.loginSuccess);
       } else {
         alert("Wrong email or password");
         return false;
