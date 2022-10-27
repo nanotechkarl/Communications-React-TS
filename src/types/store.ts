@@ -9,3 +9,9 @@ export interface UserState {
   };
   error: string | undefined;
 }
+
+export interface ChatState {
+  loading: boolean;
+  history: [];
+  error: string | undefined;
+}

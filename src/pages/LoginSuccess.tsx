@@ -1,9 +1,22 @@
-import {useAppSelector } from "../hooks/useTypedSelector"
+import {useAppSelector, useAppDispatch } from "../hooks/useTypedSelector"
 import { User } from "../types/global";
+import { useEffect } from "react";
+import { getUserObject } from "../store/user.slice";
 
 export default function LoginSuccess() {
   //#region - Hooks
+  const dispatch = useAppDispatch()
   const currentUser: User = useAppSelector(({user}) => user.current);
+  //#endregion
+
+  //#region - FETCH
+  useEffect(() => {
+    fetchData();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const fetchData = async () => {
+    await dispatch(getUserObject());
+  };
   //#endregion
 
   return (

@@ -38,7 +38,7 @@ export const loginUser = createAsyncThunk(
       const data = response.data;
 
       document.cookie = `token=${data.token}; max-age=${60 * 60 * 24 * 14}`; //2 weeks
-      return { email, id: data.id };
+      return { email, id: data.id, fullName: data.fullName };
     } catch (error: any) {
       return thunkApi.rejectWithValue(error.message);
     }
@@ -98,14 +98,18 @@ export const getUserObject = createAsyncThunk(
   "user/myProperties",
   async (arg, thunkApi) => {
     try {
+      token = getCookie("token");
       const response = await axios.get(
         `${server.communicationsAPI}/users/property`,
-        { headers }
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
-      console.log("response :", response);
 
-      // const result = response.data;
-      // return result;
+      const result = response.data;
+      return result;
     } catch (error: any) {
       return thunkApi.rejectWithValue(error.message);
     }

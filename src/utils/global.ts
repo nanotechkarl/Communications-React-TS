@@ -66,7 +66,8 @@ export function logout(): void {
  * Get user object from localStorage by user ID
  */
 export function getUserObjectbyId(id: number, usersArray: object[]): object {
-  const userObject = usersArray.find((user: User) => user.id === id);
+  const userObject: User =
+    usersArray.find((user: User) => user.id === id) || {};
 
-  return userObject || {};
+  return userObject;
 }
